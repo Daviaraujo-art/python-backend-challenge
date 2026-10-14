@@ -1,0 +1,22 @@
+name: Run challenge
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Process three input files
+        run: |
+          for i in 01 02 03; do
+            python __main__.py "input/numbers_${i}.txt" "output/numbers_${i}.txt"
+          done
+      - uses: actions/upload-artifact@v4
+        with:
+          name: challenge-output-files
+          path: output/*.txt
+          if-no-files-found: error
